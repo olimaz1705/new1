@@ -1,9 +1,9 @@
-name: Update lessons.json every minute
+name: Update lessons.json from Google Script
 
 on:
   schedule:
-    - cron: '*/1 * * * *'  # كل دقيقة
-  workflow_dispatch:       # لتشغيله يدويًا أيضاً
+    - cron: '*/1 * * * *' # كل دقيقة
+  workflow_dispatch: # يمكن تشغيلها يدويًا
 
 jobs:
   update-json:
@@ -13,18 +13,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Fetch latest JSON from Google Script
+      - name: Fetch JSON from Google Script
         run: |
-          curl -s "https://script.google.com/macros/s/AKfycbxbMir627wxKjjOkvlALCd9i6hW7Iyrgj6cSL_lHe8I-ey9nMPRwEVyZ7Hj2HEpn7Tu/exec" -o data/lessons.json
+          curl -L "https://script.google.com/macros/s/AKfycbxbMir627wxKjjOkvlALCd9i6hW7Iyrgj6cSL_lHe8I-ey9nMPRwEVyZ7Hj2HEpn7Tu/exec" -o data/lessons.json
 
       - name: Commit and push if changed
         run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-          if git diff --quiet; then
-            echo "No changes to commit"
-          else
-            git add data/lessons.json
-            git commit -m "⬆️ تحديث تلقائي للـ lessons.json"
-            git push
-          fi
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/lessons.json
+          git diff --cached --quiet || git commit -m "⬆️ Update lessons.json"
+          git push
