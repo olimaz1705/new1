@@ -13,8 +13,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Download latest JSON from Google Script
-        run: curl -s https://script.google.com/macros/s/AKfycbxbMir627wxKjjOkvlALCd9i6hW7Iyrgj6cSL_lHe8I-ey9nMPRwEVyZ7Hj2HEpn7Tu/exec -o data/lessons.json
-
+        run: curl -s https://script.google.com/macros/s/AKfycbxbMir627wxKjjOkvlALCd9i6hW7Iyrgj6cSL_lHe8I-ey9nMPRwEVyZ7Hj2HEpn7Tu/exec
       - name: Commit and push if changed
         run: |
           git config user.name "github-actions"
